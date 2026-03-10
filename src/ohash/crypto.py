@@ -4,14 +4,13 @@ Provides encryption and decryption classes for different modes.
 """
 
 import os
-import hashlib
 from pathlib import Path
-from typing import Tuple, Optional
+from typing import Optional, Callable, cast
 
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
 from .config import (
-    SALT_SIZE, ROUNDS, KEY_SIZE, NONCE_SIZE, TAG_SIZE,
+    SALT_SIZE, ROUNDS, NONCE_SIZE, TAG_SIZE,
     CHUNK_DATA_SIZE, EncMode
 )
 from .exceptions import (
@@ -98,7 +97,7 @@ class Encrypter:
         return cipher.encrypt(plaintext, self._master_nonce)
 
     def encrypt_file(self, input_path: Path, output_path: Path, mode: int = EncMode.CNK,
-                     progress_callback: Optional[callable] = None) -> int:
+                     progress_callback: Optional[Callable[[int, int], None]] = None) -> int:
         """
         Encrypt file with specified mode.
 
@@ -121,7 +120,7 @@ class Encrypter:
             raise EncryptionError(f"Invalid encryption mode: {mode}")
 
     def _encrypt_block_mode(self, input_path: Path, output_path: Path, file_size: int,
-                            progress_callback: Optional[callable]) -> int:
+                            progress_callback: Optional[Callable[[int, int], None]]) -> int:
         """Encrypt using block mode (single nonce)."""
         cipher = BlockCipher(self._key)
 
@@ -156,7 +155,7 @@ class Encrypter:
         return 1
 
     def _encrypt_chunk_mode(self, input_path: Path, output_path: Path, file_size: int,
-                            progress_callback: Optional[callable]) -> int:
+                            progress_callback: Optional[Callable[[int, int], None]]) -> int:
         """Encrypt using chunked mode (per-chunk nonce and tag)."""
         cipher = ChunkCipher(self._key)
         num_chunks = max(1, (file_size + CHUNK_DATA_SIZE - 1) // CHUNK_DATA_SIZE)
@@ -204,10 +203,12 @@ class Decrypter:
 
     @property
     def mode(self) -> int:
+        assert self._mode is not None
         return self._mode
 
     @property
     def file_size(self) -> int:
+        assert self._file_size is not None
         return self._file_size
 
     def read_header(self, input_path: Path) -> None:
@@ -228,7 +229,7 @@ class Decrypter:
         self._mode = mode
 
     def decrypt_file(self, input_path: Path, output_path: Path,
-                     progress_callback: Optional[callable] = None) -> int:
+                     progress_callback: Optional[Callable[[int, int], None]] = None) -> int:
         """
         Decrypt file using mode detected from header.
 
@@ -243,8 +244,9 @@ class Decrypter:
             raise InvalidModeError(f"Unknown encryption mode: {self._mode}")
 
     def _decrypt_block_mode(self, input_path: Path, output_path: Path,
-                             progress_callback: Optional[callable]) -> int:
+                             progress_callback: Optional[Callable[[int, int], None]]) -> int:
         """Decrypt using block mode."""
+        assert self._key is not None
         cipher = BlockCipher(self._key)
 
         # Read ciphertext (skip header)
@@ -254,6 +256,7 @@ class Decrypter:
 
         # Decrypt
         try:
+            assert self._master_nonce is not None
             plaintext = cipher.decrypt(ciphertext, self._master_nonce)
         except Exception as e:
             raise DecryptionError(f"Decryption failed: {e}")
@@ -279,8 +282,10 @@ class Decrypter:
         return 1
 
     def _decrypt_chunk_mode(self, input_path: Path, output_path: Path,
-                             progress_callback: Optional[callable]) -> int:
+                             progress_callback: Optional[Callable[[int, int], None]]) -> int:
         """Decrypt using chunked mode."""
+        assert self._key is not None
+        assert self._file_size is not None
         cipher = ChunkCipher(self._key)
         num_chunks = max(1, (self._file_size + CHUNK_DATA_SIZE - 1) // CHUNK_DATA_SIZE)
 
@@ -303,6 +308,7 @@ class Decrypter:
                 ciphertext = infile.read(chunk_size)
 
                 try:
+                    assert self._master_nonce is not None
                     plaintext = cipher.decrypt_chunk(ciphertext, self._master_nonce, i)
                 except Exception as e:
                     # Clean up temp file on failure
