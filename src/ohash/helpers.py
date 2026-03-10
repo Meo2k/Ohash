@@ -7,7 +7,6 @@ from typing import Tuple, Optional
 from .config import (
     SALT_SIZE, ROUNDS, KEY_SIZE, NONCE_SIZE, EncMode, PROGRESS_WIDTH
 )
-from .crypto import Encrypter, Decrypter
 from .exceptions import OhashError
 
 def derive_key(passphrase: str, salt: bytes, rounds: int = ROUNDS) -> bytes:
@@ -122,6 +121,7 @@ def encrypt_file(input_path: str | Path, output_path: Optional[str | Path] = Non
         output_path_obj = Path(output_path)
 
     # Create encrypter
+    from .crypto import Encrypter
     encrypter = Encrypter(passphrase)
 
     # Mode string
@@ -169,6 +169,7 @@ def decrypt_file(input_path: str | Path, output_path: Optional[str | Path] = Non
         output_path_obj = Path(output_path)
 
     # Create decrypter and read header
+    from .crypto import Decrypter
     try:
         decrypter = Decrypter(passphrase)
         decrypter.read_header(input_path_obj)

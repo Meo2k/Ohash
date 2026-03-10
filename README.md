@@ -28,8 +28,9 @@ uv sync
 Bạn có thể cài đặt `ohash` như một công cụ dòng lệnh (Global CLI) trên toàn hệ thống để sử dụng ở bất cứ đâu mà không cần phụ thuộc vào thư mục chứa code:
 
 ```bash
-uv tool install .
+uv tool install . --force
 ```
+*(Lưu ý: Thêm cờ `--force` để ghi đè và cập nhật công cụ nếu trước đó bạn đã từng cài đặt `ohash` trên máy)*
 
 Sau khi cài đặt xong, bạn có thể gọi trực tiếp lệnh `ohash` ở mọi nơi:
 ```bash

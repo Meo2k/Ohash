@@ -1,7 +1,7 @@
 [project]
 name = "ohash"
 version = "0.1.0"
-description = "Add your description here"
+description = "a command-line file encryption and decryption tool (CLI) "
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
