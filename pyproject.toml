@@ -7,3 +7,6 @@ requires-python = ">=3.12"
 dependencies = [
     "cryptography>=46.0.5",
 ]
+
+[project.scripts]
+ohash = "ohash.cli:main"

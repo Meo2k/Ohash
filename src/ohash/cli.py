@@ -7,9 +7,9 @@ import os
 import sys
 from pathlib import Path
 
-from config import EncMode, PROGRESS_WIDTH
-from crypto import Encrypter, Decrypter
-from exceptions import OhashError
+from .config import EncMode, PROGRESS_WIDTH
+from .crypto import Encrypter, Decrypter
+from .exceptions import OhashError
 import argparse
 
 
