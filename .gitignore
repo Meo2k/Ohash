@@ -1,0 +1,18 @@
+# Python defaults
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment
+.venv
+.env
+
+# Build
+build/
+dist/
+*.egg-info/
+
+# Tests / Coverage
+.pytest_cache/
+.coverage
+htmlcov/

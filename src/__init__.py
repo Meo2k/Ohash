@@ -5,8 +5,6 @@ A secure file encryption tool using AES-256-GCM with PBKDF2 key derivation.
 Supports both block mode (--bck) and chunked mode (--cnk) encryption.
 """
 
-__version__ = '2.0.0'
-
 from config import EncMode
 from crypto import Encrypter, Decrypter
 from exceptions import (
@@ -16,6 +14,8 @@ from exceptions import (
     EncryptionError,
     InvalidModeError
 )
+
+__version__ = '2.0.0'
 
 __all__ = [
     '__version__',

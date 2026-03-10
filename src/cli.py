@@ -7,9 +7,10 @@ import os
 import sys
 from pathlib import Path
 
-from config import EncMode
+from config import EncMode, PROGRESS_WIDTH
 from crypto import Encrypter, Decrypter
 from exceptions import OhashError
+import argparse
 
 
 def get_passphrase(prompt: str = None) -> str:
@@ -33,8 +34,6 @@ def get_passphrase(prompt: str = None) -> str:
 
 def show_progress(current: int, total: int, label: str = "") -> None:
     """Show progress bar."""
-    from config import PROGRESS_WIDTH
-
     if total == 0:
         percent = 100
     else:
@@ -149,8 +148,6 @@ def decrypt_file(input_path: str, output_path: str = None, passphrase: str = Non
 
 def main():
     """Main CLI entry point."""
-    import argparse
-
     parser = argparse.ArgumentParser(
         prog='ohash',
         description='ohash - File encryption/decryption tool',

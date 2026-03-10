@@ -14,7 +14,12 @@ from config import (
     SALT_SIZE, ROUNDS, KEY_SIZE, NONCE_SIZE, TAG_SIZE,
     CHUNK_DATA_SIZE, EncMode
 )
-from exceptions import DecryptionError, EncryptionError
+from exceptions import (
+    DecryptionError, 
+    EncryptionError, 
+    InvalidFileError, 
+    InvalidModeError
+)
 
 
 class KeyDeriver:
@@ -269,7 +274,6 @@ class Decrypter:
 
         # Verify magic
         if not header_bytes.startswith(b'OHASH'):
-            from exceptions import InvalidFileError
             raise InvalidFileError("Not a valid ohash encrypted file")
 
         salt, rounds, file_size, nonce, mode = FileHeader.parse(header_bytes)
@@ -293,7 +297,6 @@ class Decrypter:
         elif self._mode == EncMode.CNK:
             return self._decrypt_chunk_mode(input_path, output_path, progress_callback)
         else:
-            from exceptions import InvalidModeError
             raise InvalidModeError(f"Unknown encryption mode: {self._mode}")
 
     def _decrypt_block_mode(self, input_path: Path, output_path: Path,

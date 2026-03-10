@@ -15,7 +15,9 @@ import sys
 import os
 
 # Add src to path for direct execution
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+import pathlib
+script_dir = pathlib.Path(__file__).parent.resolve()
+sys.path.insert(0, str(script_dir / 'src'))
 
 from cli import main
 
