@@ -3,6 +3,10 @@
 *.py[cod]
 *$py.class
 
+# Type checking and linting
+*.mypy_cache
+.ruff_cache
+
 # Environment
 .venv
 .env
