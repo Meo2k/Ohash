@@ -30,6 +30,12 @@ Bạn có thể cài đặt `ohash` như một công cụ dòng lệnh (Global C
 ```bash
 uv tool install . --force
 ```
+
+Hoặc bạn có thể cài đặt `ohash` mà không cần clone dự án:
+```bash
+uv tool install https://github.com/Meo2k/Ohash.git
+```
+
 *(Lưu ý: Thêm cờ `--force` để ghi đè và cập nhật công cụ nếu trước đó bạn đã từng cài đặt `ohash` trên máy)*
 
 Sau khi cài đặt xong, bạn có thể gọi trực tiếp lệnh `ohash` ở mọi nơi:
@@ -41,7 +47,7 @@ ohash d tailieu.pdf.enc
 ## Cấu trúc File đã mã hóa
 
 Khi một tệp được mã hóa, nó được thêm một phần Header ở đầu file. Ở phiên bản hiện tại, cấu trúc Header bao gồm:
-1. `MAGIC_NUMBER`: `OHASH` (5 bytes) - Dấu hiệu nhận biết tệp được mã hóa bởi công cụ này (trước đây là `MYDB`).
+1. `MAGIC_NUMBER`: `OHASH` (5 bytes) - Dấu hiệu nhận biết tệp được mã hóa bởi công cụ này.
 2. `SALT`: Chuỗi ngẫu nhiên 16 bytes.
 3. `ROUNDS`: Số vòng lặp PBKDF2 (4 bytes).
 4. `FILE_SIZE`: Kích thước file gốc (8 bytes).
