@@ -7,9 +7,9 @@
 
 - **Bảo mật cao**: Sử dụng thư viện `cryptography` với chuẩn mã hóa AES-256-GCM (Authenticated Encryption) bảo mật và chống thay đổi dữ liệu.
 - **Dẫn xuất khóa an toàn**: Sử dụng thuật toán PBKDF2 (HMAC-SHA256) với số vòng lặp an toàn (100.000 vòng) kết hợp với Salt ngẫu nhiên (16 bytes) để chống lại các cuộc tấn công Brute-force/Rainbow Table.
-- **Xử lý tệp lớn mượt mà (Chunked Mode)**: Hỗ trợ mã hóa và giải mã dữ liệu theo từng khối (chunk). Điều này giúp tối ưu hóa bộ nhớ RAM kể cả khi mã hóa các tập tin dung lượng cực lớn.
+- **Xử lý tệp lớn mượt mà (Chunked Mode)**: Hỗ trợ mã hóa và giải mã dữ liệu theo từng khối (chunk). Điều này giúp tối ưu hóa bộ nhớ RAM kể cả khi mã hóa các tập tin dung lượng lớn.
 - **Hai chế độ mã hóa**:
-  - **Chunked Mode (`--cnk`)**: (Mặc định) Mã hóa từng khối dữ liệu với Nonce và Tag (xác thực) riêng biệt. An toàn cho file siêu lớn.
+  - **Chunked Mode (`--cnk`)**: (Mặc định) Mã hóa từng khối dữ liệu với Nonce và Tag (xác thực) riêng biệt. An toàn cho file lớn.
   - **Block Mode (`--bck`)**: Mã hóa toàn bộ file dùng chung một Nonce duy nhất.
 - **Trực quan dễ dùng**: Hiển thị thanh tiến trình (progress bar) chi tiết trong quá trình đọc/ghi file.
 - **Bảo mật mật khẩu**: Hỗ trợ nhận mật khẩu từ biến môi trường `OHASH_PASS` (thích hợp cho luồng tự động hóa/cron job) hoặc nhập trực tiếp từ bàn phím.
